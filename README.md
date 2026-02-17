@@ -2,7 +2,7 @@
 
 A production-ready Flutter application demonstrating Clean Architecture, MVC pattern, and Riverpod state management.
 
-## 🏗️ Architecture
+## Architecture
 
 The project follows a strict **MVC (Model-View-Controller)** pattern with **Riverpod** for state management.
 
@@ -23,7 +23,7 @@ lib/
 - **Dynamic UI**: The Filter screen is generated dynamically based on API response, demonstrating flexibility.
 - **Theme**: A custom `AppTheme` is used to ensure consistency and a premium feel.
 
-## 🚀 Features
+## Features
 
 1.  **Ticket System**:
     - Lists tickets with status, priority badges, and tags.
@@ -38,7 +38,7 @@ lib/
     - Premium UI design with Hero animations.
     - Stats cards and detailed user info.
 
-## 🛠️ How to Run
+## How to Run
 
 1.  **Install Dependencies**:
     ```bash
@@ -50,12 +50,12 @@ lib/
     flutter run
     ```
 
-## 🧪 Testing
+## Testing
 
 The codebase is structured to be easily testable.
 - **Controllers** rely on abstract `ApiService` (which can be mocked).
 - **UI** is logic-free and depends only on providers.
 
-## 📝 Assumptions
+## Assumptions
 - The API is simulated using `Future.delayed`.
 - Icons and specific UI elements are based on the provided reference text descriptions.
