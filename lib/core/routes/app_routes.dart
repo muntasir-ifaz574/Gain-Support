@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import '../../app.dart';
 import '../../views/filter/filter_screen.dart';
 import '../../views/ticket/ticket_detail_screen.dart';
+import '../../views/splash/splash_screen.dart';
 
 class AppRoutes {
+  static const String splash = '/splash';
   static const String home = '/';
   static const String filter = '/filter';
   static const String ticketDetail = '/ticket_detail';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case splash:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case home:
         return MaterialPageRoute(builder: (_) => const MainScreen());
       case filter:
