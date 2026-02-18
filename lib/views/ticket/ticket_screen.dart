@@ -23,52 +23,145 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
     super.dispose();
   }
 
-  void _toggleSearch() {
-    setState(() {
-      _isSearchVisible = !_isSearchVisible;
-      if (!_isSearchVisible) {
-        _searchController.clear();
-        ref.read(ticketControllerProvider.notifier).search('');
-      } else {
-        // Clear search when opening to start fresh, or keep?
-        // Usually keeping previous state is fine, but clearing is safer for "starting search"
-        // Let's just keep the text if they re-open, but clear on close.
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final ticketState = ref.watch(ticketControllerProvider);
+    final ticketController = ref.watch(ticketControllerProvider.notifier);
+    final activeFiltersCount = ticketController.activeFiltersCount;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildCustomHeader(),
-            if (_isSearchVisible) _buildSearchBar(),
-            Expanded(
-              child: ticketState.when(
-                data: (tickets) {
-                  if (tickets.isEmpty) {
-                    return _buildEmptyState();
-                  }
-                  return _buildTicketList(tickets);
-                },
-                loading: () => const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary),
+      appBar: AppBar(
+        automaticallyImplyLeading:
+            false, // Or true if drawer/back is needed? Assuming no drawer or back behavior from previous code (it was a main screen).
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: _isSearchVisible
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 18,
                 ),
-                error: (err, stack) => Center(
-                  child: Text(
-                    'Error: $err',
-                    style: const TextStyle(color: AppColors.error),
+                decoration: const InputDecoration(
+                  hintText: 'Search tickets...',
+                  hintStyle: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 18,
                   ),
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  ref.read(ticketControllerProvider.notifier).search(value);
+                },
+              )
+            : const Text(
+                'Gain Support',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              _isSearchVisible ? Icons.close : Icons.search,
+              color: AppColors.textPrimary,
+            ),
+            onPressed: () {
+              if (_isSearchVisible) {
+                _searchController.clear();
+                ref.read(ticketControllerProvider.notifier).search('');
+              }
+              setState(() {
+                _isSearchVisible = !_isSearchVisible;
+              });
+            },
+          ),
+          if (!_isSearchVisible)
+            IconButton(
+              icon: const Icon(Icons.filter_list, color: AppColors.textPrimary),
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.filter);
+              },
+            ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: Column(
+        children: [
+          if (activeFiltersCount > 0)
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 12.0,
+              ),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      ref
+                          .read(ticketControllerProvider.notifier)
+                          .clearFilters();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.error.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppColors.error.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.close,
+                            size: 16,
+                            color: AppColors.error,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Reset filters ($activeFiltersCount)',
+                            style: const TextStyle(
+                              color: AppColors.error,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          Expanded(
+            child: ticketState.when(
+              data: (tickets) {
+                if (tickets.isEmpty) {
+                  return _buildEmptyState();
+                }
+                return _buildTicketList(tickets);
+              },
+              loading: () => const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),
+              error: (err, stack) => Center(
+                child: Text(
+                  'Error: $err',
+                  style: const TextStyle(color: AppColors.error),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreateTicketDialog(context),
@@ -76,118 +169,6 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: const Icon(Icons.add_rounded, color: Colors.white, size: 28),
-      ),
-    );
-  }
-
-  Widget _buildCustomHeader() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Gain Support',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                  letterSpacing: -0.5,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'Manage your support requests',
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadowColor,
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    _isSearchVisible
-                        ? Icons.close_rounded
-                        : Icons.search_rounded,
-                    color: AppColors.textPrimary,
-                  ),
-                  onPressed: _toggleSearch,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadowColor,
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.filter_list_rounded,
-                    color: AppColors.textPrimary,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.filter);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Container(
-        height: 48,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: TextField(
-          controller: _searchController,
-          onChanged: (value) {
-            ref.read(ticketControllerProvider.notifier).search(value);
-          },
-          decoration: const InputDecoration(
-            hintText: 'Search tickets...',
-            hintStyle: TextStyle(color: AppColors.textSecondary),
-            prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 14),
-          ),
-        ),
       ),
     );
   }

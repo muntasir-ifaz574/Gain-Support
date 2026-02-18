@@ -17,5 +17,17 @@ class User {
     required this.group,
   });
 
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      email: json['email'],
+      avatarUrl: json['avatarUrl'],
+      role: json['role'],
+      group: json['group'],
+    );
+  }
+
   String get fullName => '$firstName $lastName';
 }

@@ -75,18 +75,24 @@ class TicketController extends AsyncNotifier<List<Ticket>> {
 
       if (_currentFilters.containsKey('Tags') &&
           _currentFilters['Tags'] != null) {
-        final query = (_currentFilters['Tags'] as String).toLowerCase();
-        if (query.isNotEmpty) {
-          bool match = ticket.tags.any((t) => t.toLowerCase().contains(query));
-          if (!match) return false;
+        final selectedTags = _currentFilters['Tags'] as List<String>;
+        bool hasTag = false;
+        for (var tag in selectedTags) {
+          if (ticket.tags.contains(tag)) {
+            hasTag = true;
+            break;
+          }
         }
+        if (!hasTag && selectedTags.isNotEmpty) return false;
       }
 
       return true;
     }).toList();
   }
 
-  Future<void> clearFilters() async {
+  int get activeFiltersCount => _currentFilters.length;
+
+  void clearFilters() async {
     _currentFilters = {};
     _searchQuery = '';
     state = const AsyncValue.loading();

@@ -1,0 +1,152 @@
+{
+  "tickets": [
+    {
+      "id": "132198423",
+      "title": "Search view, which can display dynamic suggestions",
+      "description": "The search view needs to be improved to show dynamic suggestions as the user types.",
+      "status": "Open",
+      "date": "2023-10-25T10:00:00Z",
+      "senderName": "Michale",
+      "priority": "Low",
+      "tags": [
+        "Low",
+        "Open",
+        "Bug"
+      ]
+    },
+    {
+      "id": "132198424",
+      "title": "Ticket subject small",
+      "description": "The ticket subject line is too small on mobile devices.",
+      "status": "Open",
+      "date": "2023-10-24T14:30:00Z",
+      "senderName": "Noah",
+      "priority": "Urgent",
+      "tags": [
+        "Urgent",
+        "Open",
+        "Spam",
+        "UI/UX"
+      ]
+    },
+    {
+      "id": "132198425",
+      "title": "Login page crashing on iOS 16",
+      "description": "Users reporting crashes when attempting to login on iOS 16 devices.",
+      "status": "Closed",
+      "date": "2023-10-23T09:15:00Z",
+      "senderName": "Jonus",
+      "priority": "Normal",
+      "tags": [
+        "Normal",
+        "Closed",
+        "Bug"
+      ]
+    },
+    {
+      "id": "132198426",
+      "title": "Add dark mode support",
+      "description": "Request to add dark mode to the application.",
+      "status": "Open",
+      "date": "2023-10-26T11:20:00Z",
+      "senderName": "Sarah",
+      "priority": "Normal",
+      "tags": [
+        "Normal",
+        "Feature",
+        "Open"
+      ]
+    },
+    {
+      "id": "132198427",
+      "title": "Export data to CSV not working",
+      "description": "Clicking the export button does nothing.",
+      "status": "Open",
+      "date": "2023-10-26T16:45:00Z",
+      "senderName": "David",
+      "priority": "High",
+      "tags": [
+        "High",
+        "Bug",
+        "Open",
+        "Lara"
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "type": "dropdown",
+      "label": "Brand",
+      "options": [
+        "Gains",
+        "GainSolution",
+        "GainHQ"
+      ]
+    },
+    {
+      "type": "dropdown",
+      "label": "Priority",
+      "options": [
+        "Low",
+        "Medium",
+        "High",
+        "Urgent"
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Tags"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "1",
+      "name": "Muntasir Efaz",
+      "email": "efaz@email.com",
+      "phone": "+8801711111111",
+      "avatarUrl": "https://i.pravatar.cc/150?u=15",
+      "location": "12A, Dhaka, Bangladesh"
+    },
+    {
+      "id": "2",
+      "name": "Hridoy",
+      "email": "hridy@email.com",
+      "phone": "+8801811111111",
+      "avatarUrl": "https://i.pravatar.cc/150?u=2",
+      "location": "14B, Dhaka, Bangladesh"
+    },
+    {
+      "id": "3",
+      "name": "Sara",
+      "email": "rifat@email.com",
+      "phone": "+8801911111111",
+      "avatarUrl": "https://i.pravatar.cc/150?u=13",
+      "location": "16C, Dhaka, Bangladesh"
+    },
+    {
+      "id": "4",
+      "name": "Shishir",
+      "email": "shishir@email.com",
+      "phone": "+8801311111111",
+      "avatarUrl": "https://i.pravatar.cc/150?u=9",
+      "location": "22D, Dhaka, Bangladesh"
+    },
+    {
+      "id": "5",
+      "name": "Koushik",
+      "email": "koushik@email.com",
+      "phone": "+8801611111111",
+      "avatarUrl": "https://i.pravatar.cc/150?u=5",
+      "location": "5E, Dhaka, Bangladesh"
+    }
+  ],
+  "user": {
+    "id": "u1",
+    "firstName": "Muntasir",
+    "lastName": "Efaz",
+    "email": "muntasir@email.com",
+    "avatarUrl": "https://i.pravatar.cc/150?u=u1",
+    "role": "Manager",
+    "group": "Codecyaneon support"
+  }
+}
