@@ -1,61 +1,87 @@
-# Gain Solutions Flutter App
+# Gain Support App
 
-A production-ready Flutter application demonstrating Clean Architecture, MVC pattern, and Riverpod state management.
+Welcome to the **Gain Support** application project. This document serves as a comprehensive guide to the project's architecture, codebase structure, and implemented features.
 
-## Architecture
+## Project Structure
 
-The project follows a strict **MVC (Model-View-Controller)** pattern with **Riverpod** for state management.
+The project follows a feature-first, layer-based architecture designed for scalability and maintainability.
 
-### Folder Structure
-```
+```text
 lib/
-├── core/           # Constants, Theme, Routes, Utils
-├── models/         # Data Models (Ticket, Filter, Contact, User)
-├── views/          # UI Screens (Ticket, Filter, Contact, Profile)
-├── controllers/    # Business Logic & State Management (Riverpod)
-├── services/       # API Simulation Service
-└── widgets/        # Reusable Components
+├── controllers/          # Business logic and state management (Riverpod)
+│   ├── ticket_controller.dart
+│   └── ...
+├── core/                 # Shared resources and utilities
+│   ├── constants/        # App-wide constants (colors, strings)
+│   ├── routes/           # Navigation and routing configuration
+│   ├── theme/            # App theme and styling definitions
+│   └── utils/            # Helper functions
+├── models/               # Data models and JSON serialization
+│   ├── ticket_model.dart
+│   └── ...
+├── services/             # Data access layer (API simulation)
+│   ├── api_service.dart
+│   └── ...
+├── views/                # UI Layer (Screens and Widgets)
+│   ├── contact/          # Contact screen feature
+│   ├── filter/           # Filter screen feature
+│   ├── profile/          # Profile screen feature
+│   ├── splash/           # Splash screen feature
+│   ├── ticket/           # Ticket list and detail features
+│   └── ...
+├── widgets/              # Reusable UI components
+│   ├── ticket_card.dart
+│   └── ...
+├── App.dart              # Root widget and app configuration
+└── main.dart             # Application entry point
 ```
 
-### Key Decisions
-- **Riverpod**: Chosen for its compile-time safety, easy testing, and separation of concerns.
-- **MVC**: Clear separation between UI (Views), Logic (Controllers), and Data (Models).
-- **Dynamic UI**: The Filter screen is generated dynamically based on API response, demonstrating flexibility.
-- **Theme**: A custom `AppTheme` is used to ensure consistency and a premium feel.
+## Project Approach
+
+### Architecture: MVC (Model-View-Controller)
+We adopted a clean MVC pattern alongside **Riverpod** for state management to ensure a robust and testable codebase.
+
+*   **Model**: Defines the data structures using plain Dart objects.
+*   **View**: The UI layer that observes the state. Views are passive and only rebuild when the state changes.
+*   **Controller**: Handles user input and business logic. It interacts with the Service layer to fetch data and updates the state, which in turn updates the View.
+
+### State Management: Riverpod
+Riverpod was chosen for its:
+*   **Compile-time safety**: Catches errors early during development.
+*   **Decoupling**: Separates UI from business logic effectively.
+*   **Testability**: Makes it easy to mock dependencies and test controllers in isolation.
+*   **Scalability**: Handles complex state dependencies efficiently.
+
+### Design Philosophy
+*   **Component-Based**: The UI is built using small, reusable widgets (e.g., `TicketCard`) to reduce code duplication.
+*   **Feature Isolation**: Features are organized into their own directories within `views/`, making it easy to locate and maintain code related to specific functionality.
+*   **Modern Flutter**: Utilizes current best practices, such as `Color.withValues` for better color fidelity and modern Material 3 design principles.
 
 ## Features
 
-1.  **Ticket System**:
-    - Lists tickets with status, priority badges, and tags.
-    - Simulates network delay and loading states.
-2.  **Dynamic Filter**:
-    - Fetches filter configuration from API.
-    - Renders Dropdowns, TextFields, or DatePickers dynamically.
-3.  **Contacts**:
-    - Searchable contact list with debouncing (300ms).
-    - Optimistic UI updates.
-4.  **Profile**:
-    - Premium UI design with Hero animations.
-    - Stats cards and detailed user info.
+### 1. User Interface & Experience
+*   **Splash Screen**: A branded launch screen that seamlessly transitions to the main app.
+*   **Modern Design**: A clean, professional aesthetic using the "Gain Support" brand colors.
+*   **Responsive Layouts**: optimises for various potential screen sizes using flexible widgets.
 
-## How to Run
+### 2. Ticket Management
+*   **Ticket List**: Displays a scrollable list of support tickets with summary details.
+*   **Status Indicators**: Visual cues (colors/badges) for different ticket statuses (Open, Closed, Pending).
+*   **Search Functionality**:
+    *   Located in the AppBar for quick access.
+    *   Filters tickets in real-time based on title or ID.
+*   **Advanced Filtering**:
+    *   Dedicated filter screen.
+    *   Allows filtering by status, priority, or date.
 
-1.  **Install Dependencies**:
-    ```bash
-    flutter pub get
-    ```
+### 3. Contact Management
+*   **Contact List**: View a list of support contacts.
+*   **Profile Images**: Displays user avatars with fallbacks.
 
-2.  **Run the App**:
-    ```bash
-    flutter run
-    ```
+### 4. Navigation
+*   **Bottom Navigation Bar**: Easy access to Tickets, Contacts, and Profile sections.
+*   **Named Routing**: Centralized routing logic in `AppRoutes` for maintainable navigation.
+*   **Smooth Transitions**: Custom slide and fade animations between screens.
 
-## Testing
-
-The codebase is structured to be easily testable.
-- **Controllers** rely on abstract `ApiService` (which can be mocked).
-- **UI** is logic-free and depends only on providers.
-
-## Assumptions
-- The API is simulated using `Future.delayed`.
-- Icons and specific UI elements are based on the provided reference text descriptions.
+### 5. Data Handling
+*   **Mock API Service**: architecture is ready for real API integration. Currently utilizes an `ApiService` that simulates network delays and returns realistic mock data.
