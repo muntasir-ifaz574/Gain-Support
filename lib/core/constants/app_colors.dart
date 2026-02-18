@@ -15,4 +15,13 @@ class AppColors {
   static const Color success = Color(0xFF4CAF50);
   static const Color warning = Color(0xFFFFC107);
   static const Color info = Color(0xFF2196F3);
+
+  // Alpha Variants
+  static final Color primaryLight = primary.withValues(alpha: 0.1);
+  static final Color warningLight = warning.withValues(alpha: 0.1);
+  static final Color infoLight = info.withValues(alpha: 0.1);
+  static final Color successLight = success.withValues(alpha: 0.1);
+  static final Color errorLight = error.withValues(alpha: 0.1);
+  static final Color textSecondaryLight = textSecondary.withValues(alpha: 0.1);
+  static final Color shadowColor = Colors.black.withValues(alpha: 0.05);
 }
