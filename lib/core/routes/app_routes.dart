@@ -8,9 +8,51 @@ class AppRoutes {
   static const String filter = '/filter';
   static const String ticketDetail = '/ticket_detail';
 
-  static Map<String, WidgetBuilder> get routes => {
-    home: (context) => const MainScreen(),
-    filter: (context) => const FilterScreen(),
-    ticketDetail: (context) => const TicketDetailScreen(),
-  };
+  static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case home:
+        return MaterialPageRoute(builder: (_) => const MainScreen());
+      case filter:
+        return _buildPageRoute(
+          const FilterScreen(),
+          offset: const Offset(0, 1), // Slide from Bottom
+        );
+      case ticketDetail:
+        return _buildPageRoute(
+          const TicketDetailScreen(),
+          settings: settings,
+          offset: const Offset(1, 0), // Slide from Right
+        );
+      default:
+        return null;
+    }
+  }
+
+  static PageRouteBuilder _buildPageRoute(
+    Widget page, {
+    RouteSettings? settings,
+    Offset offset = const Offset(1, 0),
+  }) {
+    return PageRouteBuilder(
+      settings: settings,
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = offset;
+        var end = Offset.zero;
+        var curve = Curves.easeInOut;
+
+        var tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: FadeTransition(opacity: animation, child: child),
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 300),
+      reverseTransitionDuration: const Duration(milliseconds: 300),
+    );
+  }
 }

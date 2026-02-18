@@ -130,48 +130,27 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.05),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.shadowColor,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.notifications_none_rounded,
-                        color: AppColors.textPrimary,
-                      ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('No new notifications')),
-                        );
-                      },
-                    ),
+                  ],
+                ),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.filter_list_rounded,
+                    color: AppColors.textPrimary,
                   ),
-                  Positioned(
-                    right: 12,
-                    top: 10,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                        color: AppColors.error,
-                        shape: BoxShape.circle,
-                        border: Border.fromBorderSide(
-                          BorderSide(color: Colors.white, width: 1.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.filter);
+                  },
+                ),
               ),
             ],
           ),
@@ -183,66 +162,32 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (value) {
-                  ref.read(ticketControllerProvider.notifier).search(value);
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Search tickets...',
-                  hintStyle: TextStyle(color: AppColors.textSecondary),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: AppColors.textSecondary,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 14),
-                ),
-              ),
+      child: Container(
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
+          ],
+        ),
+        child: TextField(
+          controller: _searchController,
+          onChanged: (value) {
+            ref.read(ticketControllerProvider.notifier).search(value);
+          },
+          decoration: const InputDecoration(
+            hintText: 'Search tickets...',
+            hintStyle: TextStyle(color: AppColors.textSecondary),
+            prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 14),
           ),
-          const SizedBox(width: 12),
-          Container(
-            height: 48,
-            width: 48,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.filter_list_rounded,
-                color: AppColors.primary,
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.filter);
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
